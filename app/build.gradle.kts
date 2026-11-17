@@ -23,8 +23,8 @@ android {
         applicationId = "com.nousfercorp.triferNoter"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         // Pustaka native sherpa-onnx hanya disediakan untuk arm64 (PRD: ABI arm64-v8a).
         ndk {

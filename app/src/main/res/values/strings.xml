@@ -3,11 +3,11 @@
     <string name="about_action">Tentang</string>
     <string name="about_title">Tentang dan kredit</string>
     <string name="about_version">Versi %1$s</string>
-    <string name="about_tagline">Perekam dan pencatat rapat atau kuliah berbahasa Indonesia. Gratis dan bekerja tanpa internet.</string>
+    <string name="about_tagline">Perekam dan pencatat rapat atau kuliah berbahasa Indonesia. Gratis, sumber terbuka, dan bekerja tanpa internet.</string>
     <string name="about_privacy_title">Privasi</string>
     <string name="about_privacy_body">Audio dan transkrip diproses dan disimpan di HP ini. Tidak ada akun, iklan, atau pelacak. Internet hanya dipakai untuk mengunduh model suara sekali, dan data keluar dari aplikasi hanya saat kamu sendiri memilih Kirim ke AI.</string>
     <string name="about_maker_title">Pembuat dan lisensi</string>
-    <string name="about_maker_body">Dibuat oleh Nousfercorp.\nHak cipta © 2026 Nousfercorp. Seluruh hak dilindungi. Gratis dipakai, tetapi hanya Nousfercorp yang berhak mengubah atau menyebarkan ulang aplikasi ini.</string>
+    <string name="about_maker_body">Dibuat oleh Nousfercorp.\nHak cipta © 2026 Nousfercorp. Sumber terbuka di bawah Apache License 2.0: boleh dipakai, dipelajari, diubah, dan disebarkan sesuai lisensinya.</string>
     <string name="about_show_app_license">Baca lisensi aplikasi</string>
     <string name="about_hide_app_license">Sembunyikan lisensi aplikasi</string>
     <string name="about_spec_title">Spesifikasi</string>

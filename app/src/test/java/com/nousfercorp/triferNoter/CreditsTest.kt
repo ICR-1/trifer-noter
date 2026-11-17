@@ -27,11 +27,12 @@ class CreditsTest {
         }
     }
 
-    @Test fun `lisensi aplikasi menyebut pembuat dan melarang perubahan oleh pihak lain`() {
+    @Test fun `lisensi aplikasi adalah Apache 2_0 dan pembuat tercantum di NOTICE`() {
         val text = raw(Credits.APP_LICENSE).readText()
-        assertTrue(text.contains(Credits.MAKER))
-        assertTrue(text.contains("Seluruh hak dilindungi"))
-        assertTrue(text.contains("mengubah"))
+        assertTrue(text.contains("Apache License") && text.contains("Version 2.0"))
+        val notice = listOf("NOTICE", "../NOTICE").map { File(it) }.first { it.exists() }.readText()
+        assertTrue(notice.contains(Credits.MAKER))
+        assertTrue(notice.contains("Apache License"))
     }
 
     @Test fun `salinan lisensi di aplikasi sama dengan LICENSE di akar proyek`() {
