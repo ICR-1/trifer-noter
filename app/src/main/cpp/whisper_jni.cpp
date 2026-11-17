@@ -1,5 +1,5 @@
 // Jembatan JNI tipis ke whisper.cpp untuk fitur "Rapikan".
-// Kelas Kotlin: com.example.notetaker.asr.WhisperEngine
+// Kelas Kotlin: com.nousfercorp.triferNoter.asr.WhisperEngine
 #include <jni.h>
 #include <android/log.h>
 
@@ -29,7 +29,7 @@ std::string to_std(JNIEnv *env, jstring s) {
 extern "C" {
 
 JNIEXPORT jlong JNICALL
-Java_com_example_notetaker_asr_WhisperEngine_nativeInit(JNIEnv *env, jobject, jstring modelPath) {
+Java_com_nousfercorp_triferNoter_asr_WhisperEngine_nativeInit(JNIEnv *env, jobject, jstring modelPath) {
     const std::string path = to_std(env, modelPath);
     whisper_context_params cparams = whisper_context_default_params();
     cparams.use_gpu = false;
@@ -39,12 +39,12 @@ Java_com_example_notetaker_asr_WhisperEngine_nativeInit(JNIEnv *env, jobject, js
 }
 
 JNIEXPORT void JNICALL
-Java_com_example_notetaker_asr_WhisperEngine_nativeFree(JNIEnv *, jobject, jlong ptr) {
+Java_com_nousfercorp_triferNoter_asr_WhisperEngine_nativeFree(JNIEnv *, jobject, jlong ptr) {
     if (ptr != 0) whisper_free(reinterpret_cast<whisper_context *>(ptr));
 }
 
 JNIEXPORT void JNICALL
-Java_com_example_notetaker_asr_WhisperEngine_nativeAbort(JNIEnv *, jobject, jboolean abort) {
+Java_com_nousfercorp_triferNoter_asr_WhisperEngine_nativeAbort(JNIEnv *, jobject, jboolean abort) {
     g_abort.store(abort == JNI_TRUE);
 }
 
@@ -53,7 +53,7 @@ Java_com_example_notetaker_asr_WhisperEngine_nativeAbort(JNIEnv *, jobject, jboo
  * Mengembalikan larik string berformat "t0Ms|t1Ms|noSpeechProb|teks", atau null bila gagal/dibatalkan.
  */
 JNIEXPORT jobjectArray JNICALL
-Java_com_example_notetaker_asr_WhisperEngine_nativeTranscribe(
+Java_com_nousfercorp_triferNoter_asr_WhisperEngine_nativeTranscribe(
         JNIEnv *env, jobject, jlong ptr, jfloatArray samples, jint nSamples, jint threads,
         jint audioCtx, jstring prompt) {
     auto *ctx = reinterpret_cast<whisper_context *>(ptr);

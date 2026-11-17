@@ -14,13 +14,13 @@ val keystoreProps = Properties().apply {
 }
 
 android {
-    namespace = "com.example.notetaker"
+    namespace = "com.nousfercorp.triferNoter"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.notetaker"
+        applicationId = "com.nousfercorp.triferNoter"
         minSdk = 29
         targetSdk = 36
         versionCode = 1

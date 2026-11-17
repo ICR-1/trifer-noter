@@ -3,7 +3,7 @@
     <application>
         <!-- Alat uji internal (hanya build debug): jalankan mesin live pada berkas WAV dan hitung WER/RTF. -->
         <activity
-            android:name="com.example.notetaker.debug.DebugTranscribeActivity"
+            android:name="com.nousfercorp.triferNoter.debug.DebugTranscribeActivity"
             android:exported="true" />
     </application>
 </manifest>
