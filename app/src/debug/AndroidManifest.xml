@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Alat uji internal (hanya build debug): jalankan mesin live pada berkas WAV dan hitung WER/RTF. -->
+        <activity
+            android:name="com.example.notetaker.debug.DebugTranscribeActivity"
+            android:exported="true" />
+    </application>
+</manifest>

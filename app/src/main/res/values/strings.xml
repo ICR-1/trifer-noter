@@ -1,0 +1,189 @@
+<resources>
+    <string name="app_name">Trifer Noter</string>
+    <string name="about_action">Tentang</string>
+    <string name="about_title">Tentang dan kredit</string>
+    <string name="about_version">Versi %1$s</string>
+    <string name="about_tagline">Perekam dan pencatat rapat atau kuliah berbahasa Indonesia. Gratis dan bekerja tanpa internet.</string>
+    <string name="about_privacy_title">Privasi</string>
+    <string name="about_privacy_body">Audio dan transkrip diproses dan disimpan di HP ini. Tidak ada akun, iklan, atau pelacak. Internet hanya dipakai untuk mengunduh model suara sekali, dan data keluar dari aplikasi hanya saat kamu sendiri memilih Kirim ke AI.</string>
+    <string name="about_maker_title">Pembuat dan lisensi</string>
+    <string name="about_maker_body">Dibuat oleh Nousfercorp.\nHak cipta © 2026 Nousfercorp. Seluruh hak dilindungi. Gratis dipakai, tetapi hanya Nousfercorp yang berhak mengubah atau menyebarkan ulang aplikasi ini.</string>
+    <string name="about_show_app_license">Baca lisensi aplikasi</string>
+    <string name="about_hide_app_license">Sembunyikan lisensi aplikasi</string>
+    <string name="about_spec_title">Spesifikasi</string>
+    <string name="spec_os_k">Sistem</string>
+    <string name="spec_os_v">Android 10 (API 29) atau lebih baru</string>
+    <string name="spec_cpu_k">Prosesor</string>
+    <string name="spec_cpu_v">ARM 64-bit (arm64-v8a)</string>
+    <string name="spec_lang_k">Bahasa</string>
+    <string name="spec_lang_v">Indonesia</string>
+    <string name="spec_limit_k">Batas rekam</string>
+    <string name="spec_limit_v">3 jam per rekaman</string>
+    <string name="spec_audio_k">Format audio</string>
+    <string name="spec_audio_v">WAV 16 kHz mono, ±115 MB per jam</string>
+    <string name="spec_live_k">Transkripsi live</string>
+    <string name="spec_live_v">Di perangkat, tanpa internet. Model ±340 MB diunduh sekali</string>
+    <string name="spec_refine_k">Rapikan</string>
+    <string name="spec_refine_v">Model Whisper ±820 MB diunduh sekali. Hanya tersedia di HP dengan CPU yang mendukung</string>
+    <string name="spec_ram_k">Memori (RAM)</string>
+    <string name="spec_ram_v">Perkiraan ±1,2 GB untuk live, tambahan ±850 MB saat Rapikan. HP 4 GB atau kurang bisa tidak stabil</string>
+    <string name="spec_storage_k">Ruang simpan</string>
+    <string name="spec_storage_v">±51 MB aplikasi, ±340 MB model live, ±820 MB model Rapikan, ditambah rekaman</string>
+    <string name="spec_perm_k">Izin</string>
+    <string name="spec_perm_v">Mikrofon, notifikasi, dan internet (hanya untuk mengunduh model)</string>
+    <string name="spec_tested_k">Diuji pada</string>
+    <string name="spec_tested_v">Samsung Galaxy S23 Ultra (SM-S918B). Perangkat lain belum diuji</string>
+    <string name="about_credits_title">Kredit dan lisensi</string>
+    <string name="about_credits_intro">Trifer Noter dibangun di atas karya sumber terbuka berikut. Terima kasih kepada para pembuat dan kontributornya.</string>
+    <string name="about_show_license">Lihat teks lisensi</string>
+    <string name="about_hide_license">Sembunyikan lisensi</string>
+    <string name="about_footer">Semua nama dan merek yang disebut adalah milik pemiliknya masing-masing. Aplikasi ini tidak berafiliasi dengan mereka.</string>
+
+    <!-- Beranda -->
+    <string name="home_record">Rekam</string>
+    <string name="home_recording_now">Sedang merekam</string>
+    <string name="home_empty">Belum ada catatan.\nKetuk Rekam untuk mulai.</string>
+    <string name="home_mic_denied">Izin mikrofon diperlukan untuk merekam. Aktifkan di Pengaturan aplikasi.</string>
+    <string name="home_open_settings">Pengaturan</string>
+
+    <!-- Model & transkrip live -->
+    <string name="model_banner_title">Pasang model transkripsi</string>
+    <string name="model_banner_body">Untuk teks live, unduh model sekali saja (±340 MB, butuh internet). Setelah itu semuanya berjalan offline.</string>
+    <string name="model_download">Unduh model</string>
+    <string name="model_downloading">Mengunduh model… %1$d%%</string>
+    <string name="model_failed">Unduhan gagal: %1$s</string>
+    <string name="model_retry">Coba lagi</string>
+    <string name="record_state_finalizing">MENYELESAIKAN…</string>
+    <string name="live_loading">Memuat model transkripsi…</string>
+    <string name="live_waiting">Mulai berbicara. Teks akan muncul di sini.</string>
+    <string name="live_catching_up">Mengejar… (tertinggal %1$d detik)</string>
+    <string name="live_no_model">Model transkripsi belum terpasang. Rekaman tetap tersimpan. Pasang model di Beranda untuk teks live.</string>
+    <string name="live_error">Transkripsi live gagal: %1$s. Rekaman tetap aman.</string>
+
+    <!-- Impor audio -->
+    <string name="import_action">Impor audio</string>
+    <string name="import_need_model">Unduh model transkripsi dulu (banner di Beranda), lalu impor audio.</string>
+    <string name="import_default_title">Audio impor</string>
+    <string name="import_channel_name">Impor audio</string>
+    <string name="import_notif_title">Mentranskrip audio</string>
+    <string name="import_notif_preparing">Menyiapkan…</string>
+    <string name="import_cancel">Batal</string>
+    <string name="import_progress">Mentranskrip… %1$d%%</string>
+    <string name="import_started">Impor dimulai. Transkrip muncul bertahap di catatan.</string>
+    <string name="import_no_speech">Tidak ada ucapan yang terdeteksi pada audio ini.</string>
+    <string name="import_error_no_model">Model transkripsi belum terpasang.</string>
+    <string name="import_error_storage">Ruang penyimpanan tidak cukup untuk mengimpor berkas ini.</string>
+    <string name="status_transcribing">Mentranskrip</string>
+
+    <!-- Rapikan (Whisper) -->
+    <string name="refine_title">Rapikan dengan Whisper</string>
+    <string name="refine_body">Memproses ulang audio dengan model Whisper medium untuk hasil lebih akurat, lengkap dengan tanda baca dan huruf kapital. Transkrip live diganti dengan hasilnya. Audio tidak keluar dari HP.</string>
+    <string name="refine_estimate">Perkiraan ±%1$d menit. Sebaiknya sambil mengisi daya.</string>
+    <string name="refine_start">Rapikan sekarang</string>
+    <string name="refine_model_needed">Butuh model Whisper (±820 MB, diunduh sekali, butuh internet).</string>
+    <string name="refine_model_download">Unduh model Whisper</string>
+    <string name="refine_model_downloading">Mengunduh model Whisper… %1$d%%</string>
+    <string name="refine_progress">Merapikan… %1$d%%</string>
+    <string name="refine_channel_name">Rapikan transkrip</string>
+    <string name="refine_notif_title">Merapikan transkrip</string>
+    <string name="refine_notif_preparing">Menyiapkan…</string>
+    <string name="refine_error_unsupported">Perangkat ini belum mendukung Rapikan.</string>
+    <string name="refine_error_no_model">Model Whisper belum terpasang.</string>
+    <string name="refine_error_no_audio">Berkas audio tidak ditemukan.</string>
+    <string name="refine_error_empty">Whisper tidak menemukan ucapan. Transkrip lama dipertahankan.</string>
+    <string name="status_refining_label">Merapikan</string>
+
+    <!-- Detail & hapus -->
+    <string name="detail_back">Kembali</string>
+    <string name="detail_play">Putar</string>
+    <string name="detail_bookmarks">Penanda</string>
+    <string name="detail_transcript">Transkrip</string>
+    <string name="detail_no_transcript">Belum ada transkrip untuk catatan ini. Transkrip muncul di sini bila ada ucapan yang terdeteksi dan model transkripsi sudah terpasang.</string>
+    <string name="detail_audio_missing">Berkas audio tidak ditemukan.</string>
+    <string name="action_delete">Hapus</string>
+    <string name="action_cancel">Batal</string>
+    <string name="action_save">Simpan</string>
+    <string name="detail_edit">Ubah teks</string>
+    <string name="detail_send_ai">Kirim ke AI</string>
+
+    <!-- Kirim ke AI -->
+    <string name="ai_title">Kirim ke AI</string>
+    <string name="ai_intro">Aplikasi ini tidak mengirim apa pun sendiri. Pilih tugas untuk AI, lalu salin atau bagikan teksnya dan tempel di chat AI pilihanmu (ChatGPT, Claude, Gemini, dan lain-lain).</string>
+    <string name="ai_task">Tugas untuk AI</string>
+    <string name="ai_t_lecture">Ringkasan kuliah</string>
+    <string name="ai_t_lecture_sub">Ringkasan, poin utama, istilah penting, kesimpulan, soal latihan</string>
+    <string name="ai_t_meeting">Notulen rapat</string>
+    <string name="ai_t_meeting_sub">Topik, pembahasan, keputusan, action items, isu terbuka</string>
+    <string name="ai_t_actions">Hanya action items</string>
+    <string name="ai_t_actions_sub">Daftar tugas, penanggung jawab, dan tenggat</string>
+    <string name="ai_t_custom">Prompt kustom</string>
+    <string name="ai_t_custom_sub">Tulis sendiri apa yang diminta dari AI</string>
+    <string name="ai_t_none">Tanpa prompt</string>
+    <string name="ai_t_none_sub">Hanya transkrip, tanpa instruksi</string>
+    <string name="ai_custom_label">Prompt kustom</string>
+    <string name="ai_custom_hint">Boleh memakai {judul}, {tanggal}, dan {durasi}.</string>
+    <string name="ai_options">Opsi</string>
+    <string name="ai_timestamps">Sertakan penanda waktu [00:00:00]</string>
+    <string name="ai_split">Pecah transkrip panjang (±%1$d kata per bagian)</string>
+    <string name="ai_summary">%1$d kata · %2$d bagian</string>
+    <string name="ai_multi_hint">Transkrip ini dipecah supaya muat di chat AI. Kirim berurutan: tempel Bagian 1, tunggu AI membalas, lalu Bagian 2, dan seterusnya. Tugasnya ada di bagian terakhir.</string>
+    <string name="ai_part_chip">Bagian %1$d</string>
+    <string name="ai_preview">Pratinjau · Bagian %1$d dari %2$d · %3$d kata</string>
+    <string name="ai_copy">Salin</string>
+    <string name="ai_copy_part">Salin Bagian %1$d</string>
+    <string name="ai_share">Bagikan</string>
+    <string name="ai_next_part">Lanjut ke bagian berikutnya</string>
+    <string name="ai_direct">Kirim langsung ke aplikasi AI</string>
+    <string name="ai_none_detected">Belum ada aplikasi AI yang terdeteksi. Pilih aplikasi lain lewat tombol di bawah, lalu sematkan agar muncul di sini.</string>
+    <string name="ai_more_apps">Lainnya…</string>
+    <string name="ai_more_title">Aplikasi penerima teks</string>
+    <string name="ai_more_hint">Ketuk aplikasi untuk mengirim. Centang "Sematkan" bila ini aplikasi AI yang belum dikenali, supaya selalu muncul di daftar AI.</string>
+    <string name="ai_pin">Sematkan</string>
+    <string name="ai_more_close">Tutup</string>
+    <string name="ai_app_failed">%1$s tidak dapat menerima teks ini. Gunakan Salin lalu tempel di aplikasinya.</string>
+    <string name="ai_copied">Bagian %1$d disalin. Tempel di chat AI.</string>
+    <string name="ai_share_too_big">Teks terlalu besar untuk dibagikan lewat menu Bagikan. Gunakan Salin atau Simpan .txt.</string>
+    <string name="ai_share_failed">Tidak ada aplikasi yang dapat menerima teks ini.</string>
+    <string name="ai_notice_title">Kirim transkrip ke AI?</string>
+    <string name="ai_notice_body">Transkrip akan masuk ke aplikasi yang kamu pilih dan tunduk pada kebijakan layanan AI tersebut. Pastikan tidak ada informasi sensitif dan semua peserta rekaman setuju. Pemberitahuan ini hanya muncul sekali.</string>
+    <string name="ai_notice_ok">Mengerti, lanjut</string>
+    <string name="detail_edit_title">Ubah teks transkrip</string>
+    <string name="detail_edited">diedit</string>
+    <string name="delete_title">Hapus catatan?</string>
+    <string name="delete_message">Rekaman audio dan transkrip akan dihapus permanen dari HP ini. Tindakan ini tidak dapat dibatalkan.</string>
+
+    <!-- Status rekaman -->
+    <string name="status_recording">Merekam</string>
+    <string name="status_finalizing">Memproses</string>
+    <string name="status_done">Selesai</string>
+    <string name="status_refining">Merapikan</string>
+    <string name="status_stopped">Terhenti</string>
+    <string name="status_failed">Gagal</string>
+
+    <!-- Layar rekam -->
+    <string name="record_starting">Memulai…</string>
+    <string name="record_state_recording">SEDANG MEREKAM</string>
+    <string name="record_state_paused">DIJEDA</string>
+    <string name="record_remaining">Sisa waktu %1$s</string>
+    <string name="record_bookmark">Penanda</string>
+    <string name="record_bookmark_count">%1$d penanda</string>
+    <string name="record_pause">Jeda</string>
+    <string name="record_resume">Lanjut</string>
+    <string name="record_stop">Selesai</string>
+    <string name="record_paused_system">Dijeda otomatis karena aplikasi lain memakai audio (mis. panggilan masuk). Ketuk Lanjut untuk meneruskan.</string>
+    <string name="record_near_limit">Rekaman akan berhenti otomatis dalam %1$d menit (batas 3 jam).</string>
+    <string name="record_live_placeholder">Teks live akan tampil di sini setelah fitur transkripsi aktif.</string>
+
+    <!-- Notifikasi & galat perekaman -->
+    <string name="rec_channel_name">Perekaman</string>
+    <string name="rec_notif_recording">Sedang merekam</string>
+    <string name="rec_notif_paused">Rekaman dijeda</string>
+    <string name="rec_notif_near_limit">Batas rekaman tinggal %1$d menit</string>
+    <string name="rec_pause">Jeda</string>
+    <string name="rec_resume">Lanjut</string>
+    <string name="rec_stop">Selesai</string>
+    <string name="rec_error_permission">Izin mikrofon belum diberikan.</string>
+    <string name="rec_error_storage">Ruang penyimpanan kurang dari 500 MB. Kosongkan ruang lalu coba lagi.</string>
+    <string name="rec_error_mic">Mikrofon tidak dapat dipakai. Mungkin sedang dipakai aplikasi lain.</string>
+    <string name="rec_error_read">Perekaman terhenti karena kesalahan audio.</string>
+</resources>

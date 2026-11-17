@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <path android:fillColor="#FFFEE2E2" android:pathData="M26,102 A74,74 0 1 1 174,102 A74,74 0 1 1 26,102 Z" />
+    <path android:fillColor="#FFFFFFFF" android:pathData="M64,48 H136 A14,14 0 0 1 150,62 V138 A14,14 0 0 1 136,152 H64 A14,14 0 0 1 50,138 V62 A14,14 0 0 1 64,48 Z" />
+    <path android:fillColor="#40B91C1C" android:pathData="M64,47 H136 A15,15 0 0 1 151,62 V138 A15,15 0 0 1 136,153 H64 A15,15 0 0 1 49,138 V62 A15,15 0 0 1 64,47 Z M64,49 A13,13 0 0 0 51,62 V138 A13,13 0 0 0 64,151 H136 A13,13 0 0 0 149,138 V62 A13,13 0 0 0 136,49 Z" />
+    <path android:fillColor="#FFFEE2E2" android:pathData="M100,68 L128,116 A5,5 0 0 1 123.7,123.5 H76.3 A5,5 0 0 1 72,116 Z" />
+    <path android:fillColor="#FFB91C1C" android:pathData="M101.978,68.928 L127.978,116.928 A2.25,2.25 0 0 1 124.022,119.072 L98.022,71.072 A2.25,2.25 0 0 1 101.978,68.928 Z M126,120.25 L74,120.25 A2.25,2.25 0 0 1 74,115.75 L126,115.75 A2.25,2.25 0 0 1 126,120.25 Z M72.022,116.928 L98.022,68.928 A2.25,2.25 0 0 1 101.978,71.072 L75.978,119.072 A2.25,2.25 0 0 1 72.022,116.928 Z" />
+    <path android:fillColor="#FFB91C1C" android:pathData="M102.25,86 L102.25,103 A2.25,2.25 0 0 1 97.75,103 L97.75,86 A2.25,2.25 0 0 1 102.25,86 Z" />
+    <path android:fillColor="#FFB91C1C" android:pathData="M97.4,111 A2.6,2.6 0 1 1 102.6,111 A2.6,2.6 0 1 1 97.4,111 Z" />
+    <path android:fillColor="#FF365573" android:pathData="M121,140 A19,19 0 1 1 159,140 A19,19 0 1 1 121,140 Z" />
+    <path android:fillColor="#FFFFFFFF" android:pathData="M146.682,133.318 A9.45,9.45 0 1 1 133.318,133.318 A1.25,1.25 0 0 1 135.086,135.086 A6.95,6.95 0 1 0 144.914,135.086 A1.25,1.25 0 0 1 146.682,133.318 Z" />
+    <path android:fillColor="#FFFFFFFF" android:pathData="M141,132.8 L146.5,132.8 A1.2,1.2 0 0 1 146.5,135.2 L141,135.2 A1.2,1.2 0 0 1 141,132.8 Z M145.3,134 L145.3,128.5 A1.2,1.2 0 0 1 147.7,128.5 L147.7,134 A1.2,1.2 0 0 1 145.3,134 Z" />
+</vector>

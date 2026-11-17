@@ -1,0 +1,52 @@
+LISENSI TRIFER NOTER
+Trifer Noter License (All Rights Reserved)
+
+Hak Cipta (c) 2026 Nousfercorp. Seluruh hak dilindungi.
+Copyright (c) 2026 Nousfercorp. All rights reserved.
+
+Trifer Noter ("Perangkat Lunak") adalah karya Nousfercorp. Hanya Nousfercorp yang
+berhak mengubah Perangkat Lunak ini.
+
+1. YANG DIPERBOLEHKAN
+   Pengguna boleh memasang dan memakai Perangkat Lunak secara gratis, untuk
+   keperluan pribadi maupun pekerjaan, pada perangkat miliknya sendiri.
+   Rekaman, transkrip, dan catatan yang dibuat pengguna sepenuhnya milik pengguna.
+
+2. YANG DILARANG tanpa izin tertulis dari Nousfercorp
+   a. mengubah, memodifikasi, menerjemahkan, atau membuat karya turunan dari
+      Perangkat Lunak atau kode sumbernya;
+   b. menyalin, menyebarkan ulang, menjual, menyewakan, atau mengunggah
+      Perangkat Lunak (termasuk versi yang sudah diubah) ke toko aplikasi atau
+      situs mana pun;
+   c. membongkar, mendekompilasi, atau melakukan rekayasa balik, kecuali sejauh
+      hukum yang berlaku secara tegas mengizinkannya;
+   d. menghapus atau mengubah pemberitahuan hak cipta, nama pembuat, dan kredit
+      pihak ketiga di dalam Perangkat Lunak;
+   e. memakai nama "Trifer Noter" atau "Nousfercorp" untuk produk lain.
+
+3. KOMPONEN PIHAK KETIGA
+   Perangkat Lunak memuat komponen sumber terbuka milik pihak lain (antara lain
+   sherpa-onnx, ONNX Runtime, whisper.cpp, model Whisper, PengChengStarling, dan
+   Android Jetpack). Komponen tersebut tetap tunduk pada lisensinya masing-masing,
+   yang teksnya dapat dibaca pada layar "Tentang" di dalam aplikasi. Lisensi ini
+   tidak mengubah hak yang diberikan lisensi tersebut atas komponen miliknya.
+
+4. TANPA JAMINAN
+   PERANGKAT LUNAK DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, TERSURAT
+   MAUPUN TERSIRAT, TERMASUK KETEPATAN HASIL TRANSKRIPSI. NOUSFERCORP TIDAK
+   BERTANGGUNG JAWAB ATAS KERUGIAN YANG TIMBUL DARI PEMAKAIAN PERANGKAT LUNAK.
+   PENGGUNA BERTANGGUNG JAWAB MEMENUHI HUKUM YANG BERLAKU, TERMASUK IZIN PIHAK
+   YANG SUARANYA DIREKAM.
+
+5. PENCABUTAN
+   Pelanggaran terhadap lisensi ini mengakhiri hak pemakaian pelanggar secara
+   otomatis.
+
+Izin di luar yang tertulis di atas, termasuk izin mengubah atau menyebarkan,
+hanya dapat diberikan secara tertulis oleh Nousfercorp.
+
+----------------------------------------------------------------------------
+Summary (English): Free to install and use. Only Nousfercorp may modify,
+redistribute, or create derivative works of this software. Third-party
+components remain under their own open-source licenses. Provided "as is",
+without warranty.
