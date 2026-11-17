@@ -4,7 +4,7 @@ Kamu adalah **asset maker** untuk aplikasi Android bernama **Trifer Noter**. Tug
 
 ## Tentang aplikasi
 
-Trifer Noter merekam suara (rapat, kuliah, presentasi) dan mengubahnya menjadi teks **secara live, offline di HP**, lalu pengguna bisa mengirim transkrip ke chat AI untuk dirangkum. Bahasa antarmuka: **Bahasa Indonesia**. Gratis dan open source, jadi semua aset harus **orisinal** dan boleh dirilis di bawah lisensi Apache-2.0 (jangan meniru logo merek lain, jangan memakai aset berhak cipta pihak lain, font hanya yang berlisensi open source seperti OFL).
+Trifer Noter merekam suara (rapat, kuliah, presentasi) dan mengubahnya menjadi teks **secara live, offline di HP**, lalu pengguna bisa mengirim transkrip ke chat AI untuk dirangkum. Bahasa antarmuka: **Bahasa Indonesia**. Gratis dipakai (hak cipta Nousfercorp, bukan open source), jadi semua aset harus **orisinal** dan boleh dirilis di bawah lisensi aplikasi (lihat `LICENSE`) (jangan meniru logo merek lain, jangan memakai aset berhak cipta pihak lain, font hanya yang berlisensi open source seperti OFL).
 
 Nama "Trifer Noter" tidak punya arti baku. Kamu bebas memilih konsep, tapi harus terasa: **tenang, tepercaya, modern, cepat dipahami**. Dipakai sambil duduk di kelas/rapat.
 
