@@ -136,7 +136,7 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 ./gradlew.bat :app:assembleRelease :app:bundleRelease
 ```
 
-Dokumen lain: [`PRD.md`](PRD.md) (rancangan produk), [`docs/benchmark.md`](docs/benchmark.md) (pemilihan mesin suara), [`docs/play-store-checklist.md`](docs/play-store-checklist.md) (kesiapan Play Store).
+Dokumen lain: [`docs/benchmark.md`](docs/benchmark.md) (pemilihan mesin suara), [`docs/play-store-checklist.md`](docs/play-store-checklist.md) (kesiapan Play Store).
 
 ---
 

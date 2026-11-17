@@ -27,3 +27,6 @@ release/
 *.keystore
 # berkas lokal Claude Code
 .claude/
+
+# dokumen lokal
+PRD.md
