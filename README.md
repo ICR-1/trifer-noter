@@ -51,22 +51,22 @@ Untuk rapat kantor, kuliah dosen, dan presentasi yang terlalu cepat untuk dicata
   <tr>
     <td width="33%" align="center"><img src="docs/screenshots/beranda_terang.webp" alt="Beranda dengan daftar rekaman dikelompokkan menurut tanggal, mode terang"><br><sub><b>Beranda</b><br>Rekaman per tanggal, lencana status, progres Rapikan</sub></td>
     <td width="33%" align="center"><img src="docs/screenshots/rekam_gelap.webp" alt="Layar rekam dengan gelombang suara dan transkrip live, mode gelap"><br><sub><b>Rekam</b><br>Gelombang suara dan teks live, tanpa internet</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/beranda_gelap.webp" alt="Beranda mode gelap"><br><sub><b>Mode gelap</b><br>Mengikuti pengaturan sistem</sub></td>
+    <td width="33%" align="center"><img src="docs/screenshots/detail_terang.webp" alt="Layar detail rekaman dengan pemutar, tombol Rapikan, penanda, dan transkrip"><br><sub><b>Detail</b><br>Pemutar, Rapikan, penanda, dan transkrip berwaktu</sub></td>
   </tr>
   <tr>
-    <td width="33%" align="center"><img src="docs/screenshots/rekam_terang.webp" alt="Layar rekam mode terang"><br><sub><b>Rekam (terang)</b><br>Jeda, penanda waktu, dan sisa waktu 3 jam</sub></td>
+    <td width="33%" align="center"><img src="docs/screenshots/kirim_gelap.webp" alt="Layar Kirim ke AI dengan pilihan templat, mode gelap"><br><sub><b>Kirim ke AI</b><br>Pilih templat, lalu salin atau bagikan ke aplikasi AI</sub></td>
     <td width="33%" align="center"><img src="docs/screenshots/kosong_terang.webp" alt="Tampilan awal saat belum ada rekaman"><br><sub><b>Pertama kali</b><br>Mulai merekam atau impor file audio</sub></td>
-    <td width="33%" align="center"><img src="docs/screenshots/tentang_terang.webp" alt="Layar Tentang dan kredit berisi spesifikasi dan lisensi"><br><sub><b>Tentang dan kredit</b><br>Spesifikasi, lisensi, dan kredit komponen</sub></td>
+    <td width="33%" align="center"><img src="docs/screenshots/tentang_gelap.webp" alt="Layar Tentang dan kredit berisi spesifikasi dan lisensi, mode gelap"><br><sub><b>Tentang dan kredit</b><br>Spesifikasi, lisensi, dan kredit komponen</sub></td>
   </tr>
 </table>
 
-<sub>Tangkapan layar memakai data contoh, bukan rekaman nyata.</sub>
+<sub>Tangkapan layar memakai data contoh, bukan rekaman nyata. Aplikasi mengikuti mode terang atau gelap sistem.</sub>
 
 <a id="pasang"></a>
 
 ## Pasang
 
-1. Unduh **`TriferNoter-1.2.apk`** dari [halaman rilis](https://github.com/ICR-1/trifer-noter/releases/latest).
+1. Unduh **`TriferNoter-1.3.apk`** dari [halaman rilis](https://github.com/ICR-1/trifer-noter/releases/latest).
 2. Buka berkasnya. Android akan meminta izin **memasang dari sumber ini**, izinkan sekali untuk aplikasi yang kamu pakai membukanya.
 3. Buka **Trifer Noter**, beri izin **mikrofon** dan **notifikasi**.
 4. Unduh model suara sekali (±340 MB, sebaiknya lewat Wi-Fi). Sesudah itu semuanya berjalan offline.
