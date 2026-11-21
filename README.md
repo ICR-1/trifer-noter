@@ -157,7 +157,7 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 
 Isu dan *pull request* dipersilakan. Pemilik repositori yang menentukan perubahan mana yang digabungkan. Dengan mengirim kontribusi, kamu setuju kontribusimu dilisensikan di bawah Apache License 2.0.
 
-Dokumen lain: [`docs/benchmark.md`](docs/benchmark.md) (pemilihan mesin suara), [`docs/play-store-checklist.md`](docs/play-store-checklist.md) (kesiapan Play Store).
+Dokumen lain: [`docs/benchmark.md`](docs/benchmark.md) (pemilihan mesin suara).
 
 ---
 

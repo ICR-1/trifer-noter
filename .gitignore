@@ -33,3 +33,6 @@ PRD.md
 
 # folder pengaturan IDE
 .idea/
+
+# catatan kerja lokal (tidak untuk repo publik)
+docs/play-store-checklist.md
