@@ -66,7 +66,7 @@ Untuk rapat kantor, kuliah dosen, dan presentasi yang terlalu cepat untuk dicata
 
 ## Pasang
 
-1. Unduh **`TriferNoter-1.1.apk`** dari [halaman rilis](https://github.com/ICR-1/trifer-noter/releases/latest).
+1. Unduh **`TriferNoter-1.2.apk`** dari [halaman rilis](https://github.com/ICR-1/trifer-noter/releases/latest).
 2. Buka berkasnya. Android akan meminta izin **memasang dari sumber ini**, izinkan sekali untuk aplikasi yang kamu pakai membukanya.
 3. Buka **Trifer Noter**, beri izin **mikrofon** dan **notifikasi**.
 4. Unduh model suara sekali (±340 MB, sebaiknya lewat Wi-Fi). Sesudah itu semuanya berjalan offline.
