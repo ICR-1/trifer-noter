@@ -146,7 +146,10 @@ class RefineService : Service() {
             val live = if (mode == PromptMode.NONE) emptyList() else {
                 db.segmentDao().getAll(id).map { LiveSeg(it.startMs, it.endMs, it.text) }
             }
-            Log.i(TAG, "mode petunjuk=$mode, segmen live=${live.size}")
+            // Transkrip live selalu dimuat sebagai pembanding: frasa penutup seperti "Terima kasih" hanya lolos bila
+            // mesin live juga mendengarnya. Lihat SegmentGate.
+            val liveSpans = db.segmentDao().getAll(id).map { LiveSpan(it.startMs, it.endMs, it.text) }
+            Log.i(TAG, "mode petunjuk=$mode, segmen live=${liveSpans.size}")
 
             val fresh = ArrayList<Segment>()
             var lastNotify = 0L
@@ -166,7 +169,7 @@ class RefineService : Service() {
                     val covered = ArrayList<LongRange>()
                     val chunkMs = startSample * 1000L / 16_000
                     val prompt = RefinePrompt.build(live, chunkMs, chunkMs + n * 1000L / 16_000, mode)
-                    runRange(raf, whisper, id, mask, startSample, startSample + n, covered, fresh, "chunk ${i + 1}/${chunks.size}", prompt)
+                    runRange(raf, whisper, id, mask, startSample, startSample + n, covered, fresh, "chunk ${i + 1}/${chunks.size}", prompt, liveSpans)
                     val tried = HashSet<Pair<Int, Int>>()
                     for (pass in 1..MAX_GAP_PASSES) {
                         if (id in cancelled) break
@@ -179,7 +182,7 @@ class RefineService : Service() {
                             val ge = ChunkPlanner.framesToSamples(g.endFrame)
                             val gMs = gs * 1000L / 16_000
                             val gPrompt = RefinePrompt.build(live, gMs, ge * 1000L / 16_000, mode)
-                            runRange(raf, whisper, id, mask, gs, ge, covered, fresh, "celah ${g.startFrame * 0.02f}s", gPrompt)
+                            runRange(raf, whisper, id, mask, gs, ge, covered, fresh, "celah ${g.startFrame * 0.02f}s", gPrompt, liveSpans)
                         }
                     }
                     if (id in cancelled) abortedByUser = true
@@ -236,6 +239,7 @@ class RefineService : Service() {
         fresh: MutableList<Segment>,
         label: String,
         prompt: String = "",
+        liveSpans: List<LiveSpan> = emptyList(),
     ): Int {
         val len = toSample - fromSample
         if (len <= 0) return 0
@@ -247,14 +251,19 @@ class RefineService : Service() {
         for (s in segs) {
             val absStart = baseMs + s.startMs
             val absEnd = baseMs + s.endMs
-            val voiced = ChunkPlanner.countSpeechFrames(
-                mask, (absStart / ChunkPlanner.FRAME_MS).toInt(), (absEnd / ChunkPlanner.FRAME_MS).toInt() + 1,
-            )
-            val text = HallucinationFilter.clean(s.text)
-            Log.i(TAG, "  seg %.1f-%.1f suara=%d | %s".format(absStart / 1000.0, absEnd / 1000.0, voiced, s.text))
-            // Tanpa suara di rentang waktunya = halusinasi pada senyap/derau. Titik tengah yang sudah tercakup =
+            val fromFrame = (absStart / ChunkPlanner.FRAME_MS).toInt()
+            val toFrame = (absEnd / ChunkPlanner.FRAME_MS).toInt() + 1
+            val voiced = ChunkPlanner.countSpeechFrames(mask, fromFrame, toFrame)
+            val cleaned = HallucinationFilter.clean(s.text)
+            val liveSupport = SegmentGate.liveSupports(cleaned, absStart, absEnd, liveSpans)
+            val text = SegmentGate.stripUnsupportedStock(cleaned, liveSpans.isNotEmpty(), liveSupport)
+            Log.i(TAG, "  seg %.1f-%.1f suara=%d nsp=%.2f | %s".format(absStart / 1000.0, absEnd / 1000.0, voiced, s.noSpeechProb, s.text))
+            // Tanpa suara di rentang waktunya = halusinasi pada senyap/noise. Titik tengah yang sudah tercakup =
             // duplikat dari potongan sebelumnya.
-            if (text.isBlank() || voiced < MIN_VOICED_FRAMES) continue
+            if (!SegmentGate.accept(text, voiced, liveSpans.isNotEmpty(), liveSupport)) {
+                if (text.isNotBlank()) Log.i(TAG, "  -> ditolak: %s".format(text))
+                continue
+            }
             val mid = (absStart + absEnd) / 2
             if (covered.any { mid in it }) continue
             fresh += Segment(recordingId = id, startMs = absStart, endMs = absEnd, text = text)
@@ -340,7 +349,6 @@ class RefineService : Service() {
         private const val MAX_GAP_PASSES = 2
 
         /** Segmen dengan kurang dari 0,2 dtk suara di rentang waktunya dibuang. */
-        private const val MIN_VOICED_FRAMES = 10
 
         private const val TAG = "Refine"
 

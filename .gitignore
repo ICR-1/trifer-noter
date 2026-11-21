@@ -30,3 +30,6 @@ release/
 
 # dokumen lokal
 PRD.md
+
+# folder pengaturan IDE
+.idea/

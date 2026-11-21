@@ -5,5 +5,9 @@
         <activity
             android:name="com.nousfercorp.triferNoter.debug.DebugTranscribeActivity"
             android:exported="true" />
+        <!-- Galeri tampilan (hanya debug): merender layar dengan data contoh untuk tangkapan layar. -->
+        <activity
+            android:name="com.nousfercorp.triferNoter.debug.UiGalleryActivity"
+            android:exported="true" />
     </application>
 </manifest>

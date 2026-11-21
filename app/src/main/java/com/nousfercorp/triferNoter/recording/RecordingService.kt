@@ -30,6 +30,7 @@ import com.nousfercorp.triferNoter.MainActivity
 import com.nousfercorp.triferNoter.NoterApp
 import com.nousfercorp.triferNoter.R
 import com.nousfercorp.triferNoter.asr.LiveTranscriber
+import com.nousfercorp.triferNoter.audio.AutoGain
 import com.nousfercorp.triferNoter.audio.WavWriter
 import com.nousfercorp.triferNoter.data.db.Bookmark
 import com.nousfercorp.triferNoter.data.db.Recording
@@ -154,6 +155,8 @@ class RecordingService : Service() {
             }
 
             val buffer = ShortArray(SAMPLE_RATE / 10) // 100 ms
+            // Suara lirih (rapat ramai, pembicara jauh) dikuatkan sebelum disimpan dan ditranskripsi.
+            val autoGain = AutoGain(SAMPLE_RATE)
             var lastUi = 0L
             var lastPatch = 0L
             var warned = false
@@ -180,6 +183,7 @@ class RecordingService : Service() {
                     break
                 }
                 if (n == 0) continue
+                autoGain.process(buffer, n)
                 writer.write(buffer, n)
                 transcriber?.feed(buffer, n)
                 elapsedMs = writer.durationMs

@@ -1,7 +1,12 @@
 package com.nousfercorp.triferNoter.ui.record
 
 import android.widget.Toast
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,10 +18,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -24,7 +29,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Surface
@@ -33,8 +37,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -56,6 +66,10 @@ import com.nousfercorp.triferNoter.ui.theme.TriferTheme
 import com.nousfercorp.triferNoter.util.formatClock
 import kotlin.math.sqrt
 
+/** Jumlah batang gelombang yang ditampilkan (≈ beberapa detik terakhir). */
+const val WAVE_BARS = 48
+
+/** Pembungkus berstatus: mengambil keadaan dari pengendali rekam dan meneruskan perintah ke layanan. */
 @Composable
 fun RecordScreen(
     onFinished: () -> Unit,
@@ -63,7 +77,6 @@ fun RecordScreen(
 ) {
     val context = LocalContext.current
     val state by RecordingController.state.collectAsState()
-    val extra = TriferTheme.extra
 
     // Selesai merekam (atau gagal): tampilkan galat bila ada, lalu kembali ke Beranda.
     LaunchedEffect(state.lastFinishedId, state.error, state.phase) {
@@ -75,10 +88,46 @@ fun RecordScreen(
         }
     }
 
-    val level by animateFloatAsState(targetValue = sqrt(state.level).coerceIn(0f, 1f), label = "level")
+    // Riwayat level untuk gelombang: satu batang per pembaruan tampilan, hanya saat benar-benar merekam.
+    val history = remember { mutableStateListOf<Float>() }
+    LaunchedEffect(state.elapsedMs) {
+        if (state.phase == Phase.RECORDING) {
+            history.add(sqrt(state.level).coerceIn(0f, 1f))
+            while (history.size > WAVE_BARS) history.removeAt(0)
+        }
+    }
+
+    val paused = state.phase == Phase.PAUSED
+    RecordContent(
+        state = state,
+        levels = history,
+        onBookmark = { RecordingService.send(context, RecordingService.ACTION_BOOKMARK) },
+        onPauseResume = {
+            RecordingService.send(context, if (paused) RecordingService.ACTION_RESUME else RecordingService.ACTION_PAUSE)
+        },
+        onStop = { RecordingService.send(context, RecordingService.ACTION_STOP) },
+        modifier = modifier,
+    )
+}
+
+/** Tampilan layar rekam tanpa ketergantungan pada pengendali/layanan, sehingga bisa dirender dengan data contoh. */
+@Composable
+fun RecordContent(
+    state: RecState,
+    levels: List<Float>,
+    onBookmark: () -> Unit,
+    onPauseResume: () -> Unit,
+    onStop: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val extra = TriferTheme.extra
     val recording = state.phase == Phase.RECORDING
     val paused = state.phase == Phase.PAUSED
     val accent = if (recording) extra.recording else MaterialTheme.colorScheme.outline
+    val pulse by rememberInfiniteTransition(label = "dot").animateFloat(
+        initialValue = 1f, targetValue = 0.3f,
+        animationSpec = infiniteRepeatable(tween(800), RepeatMode.Reverse), label = "dotAlpha",
+    )
 
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
@@ -89,7 +138,7 @@ fun RecordScreen(
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(16.dp))
 
             // Lencana status
             Surface(
@@ -101,7 +150,7 @@ fun RecordScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Box(Modifier.size(10.dp).background(accent, CircleShape))
+                    Box(Modifier.size(10.dp).alpha(if (recording) pulse else 1f).background(accent, CircleShape))
                     Text(
                         text = when (state.phase) {
                             Phase.RECORDING -> stringResource(R.string.record_state_recording)
@@ -115,11 +164,11 @@ fun RecordScreen(
                 }
             }
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(24.dp))
 
             Text(
                 text = formatClock(state.elapsedMs),
-                fontSize = 56.sp,
+                fontSize = 60.sp,
                 fontWeight = FontWeight.Light,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -133,17 +182,14 @@ fun RecordScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(Modifier.height(24.dp))
-            LinearProgressIndicator(
-                progress = { if (recording) level else 0f },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp),
+            Spacer(Modifier.height(20.dp))
+            Waveform(
+                levels = levels,
+                active = recording,
                 color = extra.recording,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier.fillMaxWidth().height(56.dp),
             )
-
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(20.dp))
 
             if (state.nearLimit) {
                 NoticeCard(
@@ -174,51 +220,46 @@ fun RecordScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                ControlButton(label = stringResource(R.string.record_bookmark)) {
+                ControlButton(
+                    label = stringResource(R.string.record_bookmark) +
+                        if (state.bookmarkCount > 0) " · ${state.bookmarkCount}" else "",
+                ) {
                     OutlinedIconButton(
-                        onClick = { RecordingService.send(context, RecordingService.ACTION_BOOKMARK) },
+                        onClick = onBookmark,
                         enabled = recording || paused,
                         modifier = Modifier.size(56.dp),
                     ) {
                         Icon(painterResource(R.drawable.ic_penanda), contentDescription = null)
-                    }
-                    if (state.bookmarkCount > 0) {
-                        Text(
-                            stringResource(R.string.record_bookmark_count, state.bookmarkCount),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
                     }
                 }
 
                 ControlButton(
                     label = stringResource(if (paused) R.string.record_resume else R.string.record_pause),
                 ) {
-                    FilledIconButton(
-                        onClick = {
-                            RecordingService.send(
-                                context,
-                                if (paused) RecordingService.ACTION_RESUME else RecordingService.ACTION_PAUSE,
+                    // Cincin lembut di belakang tombol utama.
+                    Box(contentAlignment = Alignment.Center) {
+                        Box(Modifier.size(96.dp).background(MaterialTheme.colorScheme.primary.copy(alpha = 0.14f), CircleShape))
+                        FilledIconButton(
+                            onClick = onPauseResume,
+                            enabled = recording || paused,
+                            modifier = Modifier.size(76.dp),
+                            colors = IconButtonDefaults.filledIconButtonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                            ),
+                        ) {
+                            Icon(
+                                painterResource(if (paused) R.drawable.ic_rekam else R.drawable.ic_jeda),
+                                contentDescription = null,
+                                modifier = Modifier.size(34.dp),
                             )
-                        },
-                        enabled = recording || paused,
-                        modifier = Modifier.size(72.dp),
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                    ) {
-                        Icon(
-                            painterResource(if (paused) R.drawable.ic_rekam else R.drawable.ic_jeda),
-                            contentDescription = null,
-                            modifier = Modifier.size(32.dp),
-                        )
+                        }
                     }
                 }
 
                 ControlButton(label = stringResource(R.string.record_stop)) {
                     FilledIconButton(
-                        onClick = { RecordingService.send(context, RecordingService.ACTION_STOP) },
+                        onClick = onStop,
                         enabled = recording || paused,
                         modifier = Modifier.size(56.dp),
                         colors = IconButtonDefaults.filledIconButtonColors(
@@ -231,6 +272,29 @@ fun RecordScreen(
                 }
             }
             Spacer(Modifier.height(8.dp))
+        }
+    }
+}
+
+/** Gelombang suara: batang-batang bulat dari riwayat level, yang terbaru di kanan. Saat jeda tampil redup dan datar. */
+@Composable
+fun Waveform(levels: List<Float>, active: Boolean, color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier) {
+        val n = WAVE_BARS
+        val gap = 4.dp.toPx()
+        val barW = (size.width - gap * (n - 1)) / n
+        val shown = levels.takeLast(n)
+        val padded = List(n - shown.size) { 0f } + shown
+        padded.forEachIndexed { i, v ->
+            val h = (size.height * (0.10f + 0.90f * v.coerceIn(0f, 1f))).coerceAtMost(size.height)
+            // Batang yang lebih baru sedikit lebih terang, memberi kesan bergerak.
+            val a = if (active) 0.45f + 0.55f * (i + 1) / n else 0.25f
+            drawRoundRect(
+                color = color.copy(alpha = a),
+                topLeft = Offset(i * (barW + gap), (size.height - h) / 2f),
+                size = Size(barW, h),
+                cornerRadius = CornerRadius(barW / 2f),
+            )
         }
     }
 }
@@ -248,7 +312,9 @@ private fun LiveTranscriptCard(state: RecState, modifier: Modifier = Modifier) {
 
     Card(
         modifier = modifier,
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Column(Modifier.fillMaxSize().padding(16.dp)) {
             if (state.liveLagMs > 3_000) {
@@ -299,8 +365,8 @@ private fun LiveTranscriptCard(state: RecState, modifier: Modifier = Modifier) {
 
 @Composable
 private fun ControlButton(label: String, content: @Composable () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        content()
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Box(Modifier.height(96.dp), contentAlignment = Alignment.Center) { content() }
         Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
     }
 }

@@ -45,6 +45,23 @@ Untuk rapat kantor, kuliah dosen, dan presentasi yang terlalu cepat untuk dicata
 
 **Terdeteksi otomatis:** aplikasi mencari semua aplikasi di HP yang bisa menerima teks, lalu menandai mana yang AI (ChatGPT, Claude, Gemini, DeepSeek, Copilot, Meta AI, NotebookLM, dan sejenisnya). Aplikasi AI yang belum dikenali bisa kamu sematkan lewat **Lainnya…**
 
+## Tampilan
+
+<table>
+  <tr>
+    <td width="33%" align="center"><img src="docs/screenshots/beranda_terang.webp" alt="Beranda dengan daftar rekaman dikelompokkan menurut tanggal, mode terang"><br><sub><b>Beranda</b><br>Rekaman per tanggal, lencana status, progres Rapikan</sub></td>
+    <td width="33%" align="center"><img src="docs/screenshots/rekam_gelap.webp" alt="Layar rekam dengan gelombang suara dan transkrip live, mode gelap"><br><sub><b>Rekam</b><br>Gelombang suara dan teks live, tanpa internet</sub></td>
+    <td width="33%" align="center"><img src="docs/screenshots/beranda_gelap.webp" alt="Beranda mode gelap"><br><sub><b>Mode gelap</b><br>Mengikuti pengaturan sistem</sub></td>
+  </tr>
+  <tr>
+    <td width="33%" align="center"><img src="docs/screenshots/rekam_terang.webp" alt="Layar rekam mode terang"><br><sub><b>Rekam (terang)</b><br>Jeda, penanda waktu, dan sisa waktu 3 jam</sub></td>
+    <td width="33%" align="center"><img src="docs/screenshots/kosong_terang.webp" alt="Tampilan awal saat belum ada rekaman"><br><sub><b>Pertama kali</b><br>Mulai merekam atau impor file audio</sub></td>
+    <td width="33%" align="center"><img src="docs/screenshots/tentang_terang.webp" alt="Layar Tentang dan kredit berisi spesifikasi dan lisensi"><br><sub><b>Tentang dan kredit</b><br>Spesifikasi, lisensi, dan kredit komponen</sub></td>
+  </tr>
+</table>
+
+<sub>Tangkapan layar memakai data contoh, bukan rekaman nyata.</sub>
+
 <a id="pasang"></a>
 
 ## Pasang
@@ -154,6 +171,8 @@ Dokumen lain: [`docs/benchmark.md`](docs/benchmark.md) (pemilihan mesin suara), 
 - **Live on-device transcription** (sherpa-onnx). Audio and text never leave your phone.
 - **Refine** with a local Whisper model for better accuracy and punctuation.
 - **Import audio files**, **edit** any sentence, and **send to AI** with templates. AI apps installed on your phone are detected automatically.
+
+**Screenshots** are in the *Tampilan* section above (sample data).
 
 **Requirements:** Android 10+, 64-bit ARM, about 1.2 GB of free RAM for live transcription, and roughly 1.2 GB of storage for models (downloaded once). Verified only on the Samsung Galaxy S23 Ultra (SM-S918B).
 
