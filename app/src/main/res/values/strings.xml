@@ -43,6 +43,7 @@
     <string name="home_record">Rekam</string>
     <string name="home_recording_now">Sedang merekam</string>
     <string name="home_empty">Belum ada catatan.\nKetuk Rekam untuk mulai.</string>
+    <string name="detail_segment_count">%1$d segmen</string>
     <string name="home_summary">%1$d rekaman · %2$s</string>
     <string name="home_group_today">Hari ini</string>
     <string name="home_group_yesterday">Kemarin</string>

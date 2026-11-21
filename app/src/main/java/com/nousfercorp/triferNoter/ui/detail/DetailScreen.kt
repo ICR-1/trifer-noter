@@ -1,27 +1,29 @@
 package com.nousfercorp.triferNoter.ui.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -40,25 +42,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nousfercorp.triferNoter.R
 import com.nousfercorp.triferNoter.asr.ModelState
 import com.nousfercorp.triferNoter.asr.WhisperSupport
-import com.nousfercorp.triferNoter.importer.JobKind
-import com.nousfercorp.triferNoter.recording.Phase
-import com.nousfercorp.triferNoter.recording.RecordingController
-import com.nousfercorp.triferNoter.refine.RefineService
 import com.nousfercorp.triferNoter.data.db.Recording
 import com.nousfercorp.triferNoter.data.db.RecordingStatus
 import com.nousfercorp.triferNoter.data.db.Segment
 import com.nousfercorp.triferNoter.importer.ImportController
 import com.nousfercorp.triferNoter.importer.ImportService
+import com.nousfercorp.triferNoter.importer.JobKind
+import com.nousfercorp.triferNoter.recording.Phase
+import com.nousfercorp.triferNoter.recording.RecordingController
+import com.nousfercorp.triferNoter.refine.RefineService
+import com.nousfercorp.triferNoter.ui.components.AppCard
+import com.nousfercorp.triferNoter.ui.components.Pill
+import com.nousfercorp.triferNoter.ui.components.SectionTitle
 import com.nousfercorp.triferNoter.ui.theme.TriferTheme
 import com.nousfercorp.triferNoter.util.formatClock
 import com.nousfercorp.triferNoter.util.formatDurationShort
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+private val dateFormat: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("d MMM yyyy, HH.mm", Locale.forLanguageTag("id-ID")).withZone(ZoneId.systemDefault())
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,9 +98,10 @@ fun DetailScreen(
 
     Scaffold(
         modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(current?.title ?: "", maxLines = 1) },
+                title = { Text(current?.title ?: "", maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(painterResource(R.drawable.ic_kembali), contentDescription = stringResource(R.string.detail_back))
@@ -105,7 +120,7 @@ fun DetailScreen(
 
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(inner),
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item { InfoCard(current) }
@@ -113,13 +128,7 @@ fun DetailScreen(
             importProgress[current.id]?.let { job ->
                 val p = job.fraction
                 item {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        ),
-                    ) {
+                    AppCard(container = MaterialTheme.colorScheme.secondaryContainer) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(
                                 stringResource(
@@ -127,6 +136,7 @@ fun DetailScreen(
                                     (p * 100).toInt(),
                                 ),
                                 style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
                             )
                             LinearProgressIndicator(progress = { p }, modifier = Modifier.fillMaxWidth())
                             TextButton(onClick = {
@@ -135,6 +145,53 @@ fun DetailScreen(
                             }) {
                                 Text(stringResource(R.string.import_cancel))
                             }
+                        }
+                    }
+                }
+            }
+
+            item {
+                Button(
+                    onClick = onSendToAi,
+                    enabled = segments.isNotEmpty(),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Icon(painterResource(R.drawable.ic_kirim_ke_ai), contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.detail_send_ai))
+                }
+            }
+
+            item {
+                AppCard {
+                    Column(Modifier.padding(16.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            FilledIconButton(onClick = { player.toggle() }, modifier = Modifier.size(52.dp)) {
+                                Icon(
+                                    painterResource(if (player.isPlaying) R.drawable.ic_jeda else R.drawable.ic_putar),
+                                    contentDescription = stringResource(if (player.isPlaying) R.string.record_pause else R.string.detail_play),
+                                )
+                            }
+                            Column(Modifier.weight(1f)) {
+                                val total = maxOf(player.durationMs, 1L)
+                                Slider(
+                                    value = player.positionMs.toFloat().coerceIn(0f, total.toFloat()),
+                                    onValueChange = { player.seekTo(it.toLong()) },
+                                    valueRange = 0f..total.toFloat(),
+                                )
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(formatClock(player.positionMs), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text(formatClock(player.durationMs), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                        }
+                        if (player.error) {
+                            Text(
+                                stringResource(R.string.detail_audio_missing),
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(top = 8.dp),
+                            )
                         }
                     }
                 }
@@ -157,66 +214,38 @@ fun DetailScreen(
                 }
             }
 
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                ) {
-                    Column(Modifier.padding(16.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            FilledIconButton(onClick = { player.toggle() }, modifier = Modifier.size(48.dp)) {
-                                Icon(
-                                    painterResource(if (player.isPlaying) R.drawable.ic_jeda else R.drawable.ic_putar),
-                                    contentDescription = stringResource(if (player.isPlaying) R.string.record_pause else R.string.detail_play),
-                                )
-                            }
-                            Column(Modifier.weight(1f)) {
-                                val total = maxOf(player.durationMs, 1L)
-                                Slider(
-                                    value = player.positionMs.toFloat().coerceIn(0f, total.toFloat()),
-                                    onValueChange = { player.seekTo(it.toLong()) },
-                                    valueRange = 0f..total.toFloat(),
-                                )
-                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                    Text(formatClock(player.positionMs), style = MaterialTheme.typography.labelSmall)
-                                    Text(formatClock(player.durationMs), style = MaterialTheme.typography.labelSmall)
-                                }
-                            }
-                        }
-                        if (player.error) {
-                            Text(
-                                stringResource(R.string.detail_audio_missing),
-                                color = MaterialTheme.colorScheme.error,
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        }
-                    }
-                }
-            }
-
             if (bookmarks.isNotEmpty()) {
                 item {
-                    Text(stringResource(R.string.detail_bookmarks), style = MaterialTheme.typography.titleSmall)
-                    LazyRow(
-                        modifier = Modifier.padding(top = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        items(bookmarks, key = { it.id }) { b ->
-                            AssistChip(onClick = { player.seekTo(b.timeMs) }, label = { Text(formatClock(b.timeMs)) })
+                    Column {
+                        SectionTitle(stringResource(R.string.detail_bookmarks))
+                        LazyRow(
+                            modifier = Modifier.padding(top = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            items(bookmarks, key = { it.id }) { b ->
+                                AssistChip(
+                                    onClick = { player.seekTo(b.timeMs) },
+                                    label = { Text(formatClock(b.timeMs)) },
+                                    leadingIcon = {
+                                        Icon(painterResource(R.drawable.ic_penanda), contentDescription = null, modifier = Modifier.size(16.dp))
+                                    },
+                                )
+                            }
                         }
                     }
                 }
             }
 
             item {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(stringResource(R.string.detail_transcript), style = MaterialTheme.typography.titleSmall)
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                        FilledTonalButton(onClick = onSendToAi, enabled = segments.isNotEmpty()) {
-                            Icon(painterResource(R.drawable.ic_kirim_ke_ai), contentDescription = null, modifier = Modifier.size(18.dp))
-                            Spacer(Modifier.width(6.dp))
-                            Text(stringResource(R.string.detail_send_ai))
-                        }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    SectionTitle(stringResource(R.string.detail_transcript), Modifier.weight(1f))
+                    if (segments.isNotEmpty()) {
+                        Text(
+                            stringResource(R.string.detail_segment_count, segments.size),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 8.dp, end = 4.dp),
+                        )
                     }
                 }
             }
@@ -231,34 +260,8 @@ fun DetailScreen(
                 }
             } else {
                 items(segments, key = { it.id }) { s ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth().clickable { player.seekTo(s.startMs) },
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        Column {
-                            Text(
-                                formatClock(s.startMs),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.primary,
-                            )
-                            if (s.edited) {
-                                Text(
-                                    stringResource(R.string.detail_edited),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                        }
-                        Text(s.text, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
-                        IconButton(onClick = { editing = s }, modifier = Modifier.size(36.dp)) {
-                            Icon(
-                                painterResource(R.drawable.ic_edit),
-                                contentDescription = stringResource(R.string.detail_edit),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(20.dp),
-                            )
-                        }
-                    }
+                    SegmentRow(s, onSeek = { player.seekTo(s.startMs) }, onEdit = { editing = s })
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
                 }
             }
         }
@@ -306,6 +309,41 @@ fun DetailScreen(
     }
 }
 
+/** Satu baris transkrip: waktu (ketuk untuk memutar dari sana), teks, dan tombol ubah. */
+@Composable
+private fun SegmentRow(s: Segment, onSeek: () -> Unit, onEdit: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Pill(
+                text = formatClock(s.startMs),
+                container = MaterialTheme.colorScheme.primaryContainer,
+                content = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.clickable(onClick = onSeek),
+            )
+            if (s.edited) {
+                Text(
+                    stringResource(R.string.detail_edited),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        Text(s.text, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f).padding(top = 2.dp))
+        IconButton(onClick = onEdit, modifier = Modifier.size(36.dp)) {
+            Icon(
+                painterResource(R.drawable.ic_edit),
+                contentDescription = stringResource(R.string.detail_edit),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp),
+            )
+        }
+    }
+}
+
 @Composable
 private fun RefineCard(
     supported: Boolean,
@@ -315,10 +353,7 @@ private fun RefineCard(
     onRefine: () -> Unit,
 ) {
     if (!supported) return
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-    ) {
+    AppCard {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(stringResource(R.string.refine_title), style = MaterialTheme.typography.titleSmall)
             Text(
@@ -334,7 +369,7 @@ private fun RefineCard(
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    Button(onClick = onRefine) { Text(stringResource(R.string.refine_start)) }
+                    FilledTonalButton(onClick = onRefine) { Text(stringResource(R.string.refine_start)) }
                 }
                 is ModelState.Downloading -> {
                     Text(
@@ -359,19 +394,32 @@ private fun RefineCard(
 @Composable
 private fun InfoCard(rec: Recording) {
     val extra = TriferTheme.extra
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-    ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(rec.title, style = MaterialTheme.typography.titleMedium)
-            Text(
-                "${formatDurationShort(rec.durationMs)} · ${statusText(rec.status)}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            rec.error?.let {
-                Text(it, style = MaterialTheme.typography.bodySmall, color = extra.onProcessingContainer)
+    val cs = MaterialTheme.colorScheme
+    val (container, content) = when (runCatching { RecordingStatus.valueOf(rec.status) }.getOrNull()) {
+        RecordingStatus.SELESAI -> extra.successContainer to extra.onSuccessContainer
+        RecordingStatus.MEREKAM -> extra.recordingContainer to extra.onRecordingContainer
+        RecordingStatus.MENTRANSKRIP, RecordingStatus.FINALISASI, RecordingStatus.MERAPIKAN ->
+            extra.processingContainer to extra.onProcessingContainer
+        RecordingStatus.TERHENTI -> cs.surfaceVariant to cs.onSurfaceVariant
+        RecordingStatus.GAGAL, null -> cs.errorContainer to cs.onErrorContainer
+    }
+    AppCard {
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.size(52.dp).background(container, CircleShape), contentAlignment = Alignment.Center) {
+                Icon(painterResource(R.drawable.ic_rekam), contentDescription = null, tint = content, modifier = Modifier.size(26.dp))
+            }
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(rec.title, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(
+                    "${dateFormat.format(Instant.ofEpochMilli(rec.createdAt))} · ${formatDurationShort(rec.durationMs)}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Pill(statusText(rec.status), container, content)
+                rec.error?.let {
+                    Text(it, style = MaterialTheme.typography.bodySmall, color = extra.onProcessingContainer)
+                }
             }
         }
     }
@@ -389,3 +437,6 @@ private fun statusText(status: String): String = stringResource(
         RecordingStatus.GAGAL, null -> R.string.status_failed
     },
 )
+
+@Suppress("unused")
+private val unusedColor: Color = Color.Unspecified

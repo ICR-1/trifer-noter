@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,6 +64,9 @@ import com.nousfercorp.triferNoter.ai.AiExportBuilder
 import com.nousfercorp.triferNoter.ai.AiExportOptions
 import com.nousfercorp.triferNoter.ai.AiPrefs
 import com.nousfercorp.triferNoter.ai.AiTemplate
+import com.nousfercorp.triferNoter.ui.components.AppCard
+import com.nousfercorp.triferNoter.ui.components.Pill
+import com.nousfercorp.triferNoter.ui.components.SectionTitle
 import com.nousfercorp.triferNoter.ui.detail.DetailViewModel
 
 /** Teks di atas ini tidak aman lewat Intent (batas Binder ±1 MB), jadi "Bagikan" memberi petunjuk memakai Salin. */
@@ -156,7 +161,7 @@ fun SendToAiScreen(
                 )
             }
 
-            item { Text(stringResource(R.string.ai_task), style = MaterialTheme.typography.titleSmall) }
+            item { SectionTitle(stringResource(R.string.ai_task)) }
             items(AiTemplate.entries.toList(), key = { it.id }) { t ->
                 TemplateRow(
                     title = stringResource(templateTitle(t)),
@@ -185,27 +190,30 @@ fun SendToAiScreen(
                 }
             }
 
-            item { Text(stringResource(R.string.ai_options), style = MaterialTheme.typography.titleSmall) }
+            item { SectionTitle(stringResource(R.string.ai_options)) }
             item {
-                SwitchRow(stringResource(R.string.ai_timestamps), withTs) {
-                    withTs = it
-                    prefs.withTimestamps = it
-                }
-            }
-            item {
-                SwitchRow(stringResource(R.string.ai_split, AiExportOptions.DEFAULT_MAX_WORDS), split) {
-                    split = it
-                    prefs.split = it
-                    selected = 0
-                    done.clear()
+                AppCard {
+                    Column(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
+                        SwitchRow(stringResource(R.string.ai_timestamps), withTs) {
+                            withTs = it
+                            prefs.withTimestamps = it
+                        }
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
+                        SwitchRow(stringResource(R.string.ai_split, AiExportOptions.DEFAULT_MAX_WORDS), split) {
+                            split = it
+                            prefs.split = it
+                            selected = 0
+                            done.clear()
+                        }
+                    }
                 }
             }
 
             item {
-                Text(
-                    stringResource(R.string.ai_summary, totalWords, parts.size),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                Pill(
+                    text = stringResource(R.string.ai_summary, totalWords, parts.size),
+                    container = MaterialTheme.colorScheme.primaryContainer,
+                    content = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
 
@@ -236,10 +244,7 @@ fun SendToAiScreen(
             }
 
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                ) {
+                AppCard(container = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(
                             stringResource(R.string.ai_preview, part.index, part.total, part.words),
@@ -296,7 +301,7 @@ fun SendToAiScreen(
 
             if (aiApps.isNotEmpty() || otherApps.isNotEmpty()) {
                 item {
-                    Text(stringResource(R.string.ai_direct), style = MaterialTheme.typography.titleSmall)
+                    SectionTitle(stringResource(R.string.ai_direct))
                     if (aiApps.isEmpty()) {
                         Text(
                             stringResource(R.string.ai_none_detected),
@@ -411,14 +416,19 @@ private fun AppLabel(app: AiApp) {
 
 @Composable
 private fun TemplateRow(title: String, subtitle: String, selected: Boolean, onClick: () -> Unit) {
-    Row(
+    val cs = MaterialTheme.colorScheme
+    Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = if (selected) cs.primaryContainer.copy(alpha = 0.55f) else cs.surface),
+        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) cs.primary else cs.outlineVariant),
     ) {
-        RadioButton(selected = selected, onClick = onClick)
-        Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyLarge)
-            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(Modifier.padding(horizontal = 8.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(selected = selected, onClick = onClick)
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleSmall)
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = cs.onSurfaceVariant)
+            }
         }
     }
 }
